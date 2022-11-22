@@ -232,3 +232,18 @@ Running migrations:
   Applying auth.0012_alter_user_first_name_max_length... OK
   Applying sessions.0001_initial... OK
 ```
+
+### Hagamos funcionar la aplicacion hecha para la demostración
+```
+- ya teniendo su entonrno validado la instalación, a continuación es para hacer la vida más fácl para el uso de entornos virtuales  
+- descargue el proyecto o clonelo en su terminal (puede ser que solo lo este viendo desde el gitgub)
+- dentro de la solución hay un archivo llamado requirements.txt, teniendo listo su entorno virutal ejecute la siguiente linea 
+pip install -r requirements.txt 
+- ingrese a la carpeta Concurso
+cd Concurso
+- subiendo el servidor y conectandose a la db previamente lista en la nube
+python manage.py runserver
+- debio haber iniciado un servicio en el puerto 8000, veamos alternativas, iniciado en puerto 8080 con acceso desde otros dispositivos, configure su firewall
+python manage.py runserver 0.0.0.0:8080 
+- si tiene problemas registrando datos en la nube, le sugiero hacer un acceso a una db local usando el archivo que esta en la carpeta del db y usar la versión que requiere hay para Sql Server 15+ y para MySql 5+
+```
