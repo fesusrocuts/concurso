@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="{{jsonLang.browserlang}}">
+    <head>
+        <meta chartset="UTF-8" />
+        <meta name="viewport" content="with=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>{{ jsonLang.talentshows }}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script>
+            function getCookie(name) {
+                var dc = document.cookie;
+                var prefix = name + "=";
+                var begin = dc.indexOf("; " + prefix);
+                if (begin == -1) {
+                    begin = dc.indexOf(prefix);
+                    if (begin != 0) return null;
+                }
+                else
+                {
+                    begin += 2;
+                    var end = document.cookie.indexOf(";", begin);
+                    if (end == -1) {
+                    end = dc.length;
+                    }
+                }
+                // because unescape has been deprecated, replaced with decodeURI
+                //return unescape(dc.substring(begin + prefix.length, end));
+                return decodeURI(dc.substring(begin + prefix.length, end));
+            }
+        </script>
+    </head>
+    <body>
+        <section role="main" class="main">
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-primary">
+                <a class="navbar-brand" href="#">{{ jsonLang.branding }}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active"><a class="nav-link text-light" href="./">{{ jsonLang.home }}</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="./admin">{{ jsonLang.admin }}</a></li>
+                        {% for ln in jsonLang.allowlangs %}
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="./{{ ln }}">{{ ln }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </nav>
+            <div class="fix-height"><br/></div>
+            <header class="main">
+                <div class="jumbotron">
+                    <div class="container">
+                        <div class="display-3">{{ jsonLang.talentshows }}</div>
+                        <p>{{ jsonLang.talentshowsdesc }} </p>
+                    </div>
+                </div>
+            </header>
+            <div class="container">
+                <article>
+                    <header>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item active" aria-current="page">{{ jsonLang.openconvocations }}</li>
+                                <li class="breadcrumb-item" aria-current="page">{{ jsonLang.closedconvocations }}</li>
+                                <li class="breadcrumb-item" aria-current="page">{{ jsonLang.allconvocations }}</li>
+                            </ol>
+                        </nav>
+                    </header>
+                    <div class="container">
+                        {%for l in concursos %}
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="d-flex justify-content-evenly mb-2">
+                                    <img src="{{l.urlimagenlogo}}" class="rounded-circle img-fluid" alt="Responsive image" alt="Logo">
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                <h2>{{l.concurso}}</h2>
+                                <h5>{{ jsonLang.startdate }} {{l.fecha_inicio}} - {{ jsonLang.closingdate }} {{l.fecha_fin}}</h5>
+                                <p>{{l.descripcion}}</p>
+                                <p><span>{{ jsonLang.registrationsuntil }} {{l.fecha_max_registro}}</span></p>
+                                <p>
+                                    {% if l.concursoAbiertoInscripciones == True %}
+                                        <div class="_form_{{l.id}} alert alert-warning d-none" role="alert"></div>
+                                        <form id="form_{{l.id}}" class="" onsubmit="return __v(event, {{l.id}})">
+                                            {% csrf_token %}
+                                            <div class="row mb-12 d-flex justify-content-center">
+                                                <div class="form-group mb-2">
+                                                    <label for="cedula" class="sr-only">Cédula</label>
+                                                    <input type="text" class="form-control" id="cedula" placeholder="Cedula">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    &nbsp;&nbsp;
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <select class="form-control form-control">
+                                                        <option value="">---</option>
+                                                        {% for c in categorias %}
+                                                        <option value="{{c.id}}">{{c.categoria}}</option>
+                                                        {% endfor %}
+                                                  </select>
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    &nbsp;&nbsp;
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label for="codempleado" class="sr-only">Código empleado</label>
+                                                    <input type="text" class="form-control" id="codempleado" placeholder="Código empleado">
+                                                </div>
+                                            </div>
+                                            <div class="row mb-12 d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-primary mb-2" role="button">{{ jsonLang.apply }}</button>
+                                            </div>
+                                        </form>
+                                    {% else %}
+                                        <a class="btn btn-secondary btn-lg" href="#" role="button">{{ jsonLang.results }}</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </article>
+                <div class="fix-height"><br/><br/><br/><br/><br/></div>
+            </div>
+        </section>
+        <footer class="footer navbar fixed-bottom bg-light">
+            <div class="container">
+                <div class="col-sm d-flex justify-content-center">
+                    <a href="{{ jsonLang.getLinkedIn }}" title="{{ jsonLang.whoIam }}" alt="{{ jsonLang.whoIam }}" ><span class="text-muted">{{ jsonLang.developedby }} {{ jsonLang.whoIam }}</a></span>
+                </div>
+                <div class="col-sm d-flex justify-content-center">
+                    <span class="text-muted">{{ jsonLang.whoIamTech }}</span>
+                </div>
+                <div class="col-sm d-flex justify-content-center">
+                    <span class="text-muted">{{ jsonLang.whoIamTest }} </span>
+                </div>
+            </div>
+          </footer>
+          <script>
+            function __v(e,idform){
+                e.preventDefault();
+                //ref1 = id, ref2 = idcategoria, ref3 = cedula, ref4 = codigoEmpleado
+                let prevSend={"ref1": "","ref2":"","ref3":"","ref4":"", "errores":0}
+                prevSend.ref1=idform;
+                if ( $("#form_"+idform).find("input[type=text]")[0].value.length>0 ){
+                    prevSend.ref3="" + $("#form_"+idform).find("input[type=text]")[0].value;
+                    $("#form_"+idform).find("input[type=text]")[0].style="background:#ffcc00;"
+                }else{
+                    prevSend.errores=1
+                    $("#form_"+idform).find("input[type=text]")[0].style="background:#ffcc00;"
+                }
+                
+                if ( $("#form_"+idform).find("select")[0].value.length>0 ){
+                    prevSend.ref2="" + $("#form_"+idform).find("select")[0].value;
+                    $("#form_"+idform).find("select")[0].style="background:#fff;"
+                }else{
+                    prevSend.errores=1
+                    $("#form_"+idform).find("select")[0].style="background:#ffcc00;"
+                }
+                
+
+                if ( $("#form_"+idform).find("input[type=text]")[1].value.length>0 ){
+                    prevSend.ref4="" + $("#form_"+idform).find("input[type=text]")[1].value;
+                    $("#form_"+idform).find("input[type=text]")[1].style="background:#ffcc00;"
+                }else{
+                    prevSend.errores=1
+                    $("#form_"+idform).find("input[type=text]")[1].style="background:#ffcc00;"
+                }
+                
+                if(prevSend.errores==0){
+                    $("._form_"+idform).css("display","block")
+                    $("._form_"+idform).removeClass( "d-none" )
+                    $("._form_"+idform).html("Enviando...")
+
+                    /*$.post('/concurso/1/categoria/2/user/775521/cod/5489/', { 
+                        csrfmiddlewaretoken: $("#form_"+idform).find("input[name=csrfmiddlewaretoken]").val()
+                    });*/
+                    
+                    $.ajax({
+                        //url: "/concurso/1/categoria/2/user/775521/cod/5489/",
+                        url: "/concurso/"+prevSend.ref1+"/categoria/"+prevSend.ref2+"/user/"+prevSend.ref3+"/cod/"+prevSend.ref4+"/",
+                        type: "POST",
+                        dataType: "json",
+                        data: JSON.stringify({csrfmiddlewaretoken: $("#form_"+idform).find("input[name=csrfmiddlewaretoken]").val(),}),
+                        headers: {
+                          "X-Requested-With": "XMLHttpRequest",
+                          "X-CSRFToken": getCookie("csrftoken"),  // don't forget to include the 'getCookie' function
+                        },
+                        success: (data) => {
+                          console.log(data);
+                          $("._form_"+idform).html(data.respuesta)
+                          if(data.bloquear==1){
+                            $("#form_"+idform).find("button").attr('disabled','disabled');
+                          }
+                        },
+                        error: (error) => {
+                          console.log(error);
+                        }
+                      });
+                }
+                console.log(prevSend)
+                console.log("form_"+idform)
+                return false;
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

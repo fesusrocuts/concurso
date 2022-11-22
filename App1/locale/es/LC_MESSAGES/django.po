@@ -1,0 +1,61 @@
+# locale/es/LC_MESSAGES/django.po
+
+msgid "English"
+msgstr "Ingles"
+
+msgid "Spanish"
+msgstr "Espagnol"
+
+msgid "home"
+msgstr "Inicio"
+
+msgid "administration"
+msgstr "Administrador"
+
+msgid "Talent shows"
+msgstr "Festival de talentos"
+
+msgid "Open convocations"
+msgstr "Convocatorias abiertas"
+
+msgid "Closed convocation"
+msgstr "Convocatoria cerrada"
+
+msgid "Closed convocations"
+msgstr "Convocatorias cerradas"
+
+msgid "All convocations"
+msgstr "Todas las Convocatorias"
+
+msgid "Open convocations, we are a company with insights to improve and promote the good health of all collaborators"
+msgstr "Convocatorias abiertas, somos una empresa con ideas para mejorar y promover la buena salud de todos los colaboradores"
+
+msgid "Registrations until"
+msgstr "Inscribirse hasta"
+
+msgid "Apply"
+msgstr "Aplica"
+
+msgid "Results"
+msgstr "Resultados"
+
+msgid "See the results"
+msgstr "Ver los resultados"
+
+msgid "Start date"
+msgstr "Fecha Inicio"
+
+msgid "Closing date"
+msgstr "Fecha de cierre"
+
+msgid "Developed by"
+msgstr "Desarrollado por"
+
+msgid "Technology used"
+msgstr "Tecnologia usada"
+
+msgid "Validated using"
+msgstr "Validado usando"
+
+msgid "en-us"
+msgstr "es-us"

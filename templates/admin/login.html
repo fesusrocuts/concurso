@@ -1,0 +1,12 @@
+{% extends 'admin/login.html' %}  
+{% load i18n static %}
+{% block sidebar %}
+    <div>
+        <p>
+            <div class="row"><b>{% translate 'user' %}</b></div>
+            <div class="row">{{ form.username.label_tag }}: director</div>
+            <div class="row">{{ form.password.label_tag }}: ClaveFacil123</div>
+        </p>
+        <h1><a href="/">{% translate 'Go' %} {% translate 'Home' %}</a> | <a href="/resetearUsuario">{% translate 'Password reset' %}</a></h1>
+    </div>
+{% endblock %}

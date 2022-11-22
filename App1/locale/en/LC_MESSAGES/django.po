@@ -1,0 +1,10 @@
+# locale/en/LC_MESSAGES/django.po
+
+msgid "English"
+msgstr "English"
+
+msgid "Spanish"
+msgstr "Spanish"
+
+msgid "home"
+msgstr "Home"
