@@ -1,67 +1,108 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+from django.utils.translation import gettext_lazy as _
+from datetime import date
+from django.core.serializers import serialize
+from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.query_utils import DeferredAttribute
+import datetime
 
 
-class App1Quienesfesus(models.Model):
+class App1QuienEsFesus(models.Model):
     id = models.BigIntegerField(primary_key=True)
 
     class Meta:
         managed = False
         db_table = 'App1_quienesfesus'
+    
+    def __str__(self) -> str:
+        return ""
 
+    def getYotas():
+        #return "Creado por <a href=\"https://www.linkedin.com/in/fesus/\" title=\"Quien soy?\" alt=\"Quien soy?\">Fesus Rocuts</a>"
+        return "Fesus Rocuts"
+    
+    def getLinkedIn():
+        return "https://www.linkedin.com/in/fesus"
+    
+    def getYotasTech():
+        return "{} django 4+ y SqlServer 15+".format(_("Technology used"))
+    
+    def getYotasTest():
+        return "{} MySql 5+ y MSSQL 15+".format(_("Validated using"))
 
 class App1Cargo(models.Model):
     id = models.IntegerField(primary_key=True)
-    cargo = models.CharField(unique=True, max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    cargo = models.CharField(unique=True, max_length=255)
     estado = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'app1_cargo'
-
-
+        
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "{0} ({1})".format(self.cargo.capitalize(),estado)
+    
 class App1Categoria(models.Model):
     id = models.IntegerField(primary_key=True)
-    categoria = models.CharField(unique=True, max_length=40, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    categoria = models.CharField(unique=True, max_length=40)
     estado = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'app1_categoria'
+        
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "{0} ({1})".format(self.categoria.capitalize(),estado)
+    
+    def getCategoria (self):
+        return self.categoria
 
 
 class App1Ciudad(models.Model):
     id = models.IntegerField(primary_key=True)
-    ciudad = models.CharField(unique=True, max_length=40, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    ciudad = models.CharField(unique=True, max_length=40)
     estado = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'app1_ciudad'
+    
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "{0} ({1})".format(self.ciudad.capitalize(),estado)
 
 
 class App1Concurso(models.Model):
     id = models.IntegerField(primary_key=True)
-    concurso = models.CharField(unique=True, max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    concurso = models.CharField(unique=True, max_length=255, blank=True, null=True)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
     fecha_max_registro = models.DateField(blank=True, null=True)
     maxpersonas = models.IntegerField()
     estado = models.IntegerField()
-    descripcion = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    urlimagenlogo = models.CharField(db_column='urlImagenLogo', max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
-    urlimagenoficial = models.CharField(db_column='urlImagenOficial', max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # Field name made lowercase.
+    descripcion = models.TextField(blank=True, null=True)
+    urlimagenlogo = models.CharField(db_column='urlImagenLogo', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    urlimagenoficial = models.CharField(db_column='urlImagenOficial', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'app1_concurso'
-
+    
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "{0} ({1}) Desde {2} hasta {3} Incripción max: {4}".format(self.concurso.capitalize(),estado, self.fecha_inicio, self.fecha_fin, self.fecha_max_registro)
+    
+    def concursoAbierto(self):
+        hoy = datetime.date.today().strftime("%Y-%m-%d")
+        fmr = self.fecha_max_registro.strftime("%Y-%m-%d")
+        return hoy < fmr
+    
+    def concursoAbiertoInscripciones(self):
+        hoy = datetime.date.today().strftime("%Y-%m-%d")
+        fmr = self.fecha_max_registro.strftime("%Y-%m-%d")
+        return hoy < fmr
 
 class App1ConcursoInscritos(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -77,8 +118,10 @@ class App1ConcursoInscritos(models.Model):
         managed = False
         db_table = 'app1_concurso_inscritos'
         unique_together = (('idconcurso', 'idempleado'),)
-
-
+        
+    def __str__(self) -> str:
+        return "{0} ({1}) | {2}".format(self.idempleado, self.idcategoria, self.idconcurso)
+    
 class App1ConcursoInscritosLog(models.Model):
     id = models.IntegerField(primary_key=True)
     idconcurso = models.IntegerField()
@@ -90,24 +133,32 @@ class App1ConcursoInscritosLog(models.Model):
     estado = models.IntegerField(blank=True, null=True)
     intentos = models.IntegerField(blank=True, null=True)
     actualizado = models.DateTimeField(blank=True, null=True)
-    descripcion = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'app1_concurso_inscritos_log'
+    
+    def __str__(self) -> str:
+        return "idconcurso:{0} cedula:{1} codigoempleado:{2} intentos:{3}".format(self.idconcurso, self.cedula, self.codigoempleado, self.intentos)
 
 
 class App1ConcursoInscritosPuntaje(models.Model):
+    User = get_user_model()
     id = models.IntegerField(primary_key=True)
     idinscrito = models.ForeignKey(App1ConcursoInscritos, models.DO_NOTHING, db_column='idinscrito')
     puntaje = models.IntegerField()
-    idusuario = models.IntegerField()
+    #idusuario = models.IntegerField()
+    idusuario = models.ForeignKey(User, models.DO_NOTHING, db_column='idusuario')
     registro = models.DateTimeField()
     estado = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'app1_concurso_inscritos_puntaje'
+    
+    def __str__(self) -> str:
+        return "puntaje:{0} idinscrito:{1}".format(self.puntaje, self.idinscrito)
 
 
 class App1ConcursoReglas(models.Model):
@@ -123,20 +174,26 @@ class App1ConcursoReglas(models.Model):
         db_table = 'app1_concurso_reglas'
         unique_together = (('idconcurso', 'idcategoria', 'idciudad', 'idcargo'),)
 
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "{0} ({1}) Más: {2}, {3}, {4}".format(self.idconcurso,estado, self.idcategoria, self.idciudad, self.idcargo)
 
 class App1Diccionario(models.Model):
-    name = models.CharField(primary_key=True, max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    value = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    name = models.CharField(primary_key=True, max_length=255)
+    value = models.CharField(max_length=255)
 
     class Meta:
         managed = False
         db_table = 'app1_diccionario'
+    
+    def __str__(self) -> str:
+        return "{0} ({1}) lang: {0}".format(self.name, self.value, self.name)
 
 
 class App1Empleado(models.Model):
     id = models.IntegerField(primary_key=True)
     codigoempleado = models.IntegerField(db_column='codigoEmpleado', unique=True)  # Field name made lowercase.
-    nombre = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
+    nombre = models.CharField(max_length=255)
     idcargo = models.ForeignKey(App1Cargo, models.DO_NOTHING, db_column='idcargo')
     cedula = models.IntegerField(unique=True)
     idciudad = models.ForeignKey(App1Ciudad, models.DO_NOTHING, db_column='idciudad')
@@ -147,156 +204,58 @@ class App1Empleado(models.Model):
     class Meta:
         managed = False
         db_table = 'app1_empleado'
+    
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "(Id:{1}) {0} cargo: {2}/{3} - {4}".format(self.nombre.capitalize(), self.cedula, self.idcargo, self.idciudad, estado)
 
 
 class App1Sexo(models.Model):
     id = models.IntegerField(primary_key=True)
-    sexo = models.CharField(unique=True, max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    sexo = models.CharField(unique=True, max_length=20, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'app1_sexo'
+    
+    def __str__(self) -> str:
+        return "{0}".format(self.sexo.capitalize())
+    
 
-
-class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group'
-
-
-class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
-
-
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
-
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.BooleanField()
-    username = models.CharField(unique=True, max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    first_name = models.CharField(max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    last_name = models.CharField(max_length=150, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    email = models.CharField(max_length=254, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    is_staff = models.BooleanField()
-    is_active = models.BooleanField()
-    date_joined = models.DateTimeField()
+'''
+class App1ConcursoPuntaje(models.Model):
+    User = get_user_model()
+    id = models.IntegerField(primary_key=True)
+    idconcurso = models.ForeignKey(App1Concurso, models.DO_NOTHING, db_column='idconcurso')
+    idempleado = models.ForeignKey(App1Empleado, models.DO_NOTHING, db_column='idempleado')
+    print("idempleado")
+    #print(idempleado)
+    #print(App1Empleado.objects.all()[0])
+    
+    all_entries = App1Cargo.objects.all()
+    print("all_entries")
+    print(all_entries)
+    
+    print(App1Empleado.objects.all()[0].__dict__["idcargo_id"])
+    Copy1 =  App1Empleado.objects.all()
+    filtered_object = filter(lambda x:  x != 2, Copy1)
+    print(filtered_object)
+    print(list(filtered_object))
+    
+    idcategoria = models.ForeignKey(App1Categoria, models.DO_NOTHING, db_column='idcategoria', blank=True, null=True)
+    puntaje = models.IntegerField()
+    #print(User.objects.all().values("id"))
+    idusuario = models.ForeignKey(User, models.DO_NOTHING, db_column='idusuario')
+    #idusuario = models.IntegerField(default=User.objects.all().values("id")[0]["id"])
+    registro = models.DateTimeField()
+    estado = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'auth_user'
+        db_table = 'app1_concurso_puntaje'
+    
 
-
-class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
-
-
-class Autores(models.Model):
-    nombre = models.CharField(max_length=45, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    apellidos = models.CharField(max_length=45, db_collation='SQL_Latin1_General_CP1_CI_AS')
-
-    class Meta:
-        managed = False
-        db_table = 'autores'
-
-
-class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
-    object_id = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    object_repr = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    action_flag = models.SmallIntegerField()
-    change_message = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS')
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'django_admin_log'
-
-
-class DjangoContentType(models.Model):
-    app_label = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    model = models.CharField(max_length=100, db_collation='SQL_Latin1_General_CP1_CI_AS')
-
-    class Meta:
-        managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
-
-
-class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    name = models.CharField(max_length=255, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    applied = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
-
-
-class DjangoSession(models.Model):
-    session_key = models.CharField(primary_key=True, max_length=40, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    session_data = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS')
-    expire_date = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'django_session'
-
-
-class Editoriales(models.Model):
-    nombre = models.CharField(max_length=45, db_collation='SQL_Latin1_General_CP1_CI_AS')
-    sede = models.CharField(max_length=45, db_collation='SQL_Latin1_General_CP1_CI_AS')
-
-    class Meta:
-        managed = False
-        db_table = 'editoriales'
-
-
-class Libros(models.Model):
-    isbn = models.IntegerField(db_column='ISBN', primary_key=True)  # Field name made lowercase.
-    editoriales = models.ForeignKey(Editoriales, models.DO_NOTHING, blank=True, null=True)
-    titulo = models.CharField(max_length=45, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    sinopsis = models.TextField(db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)  # This field type is a guess.
-    n_paginas = models.CharField(max_length=45, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'libros'
+    def __str__(self) -> str:
+        estado = "activo" if self.estado == 1 else "inactivo";
+        return "{0} ({1}) | Empleado: {2}(puntos {3} - cat {4})".format(self.idconcurso,estado, self.idempleado, self.puntaje, self.idcategoria)
+'''

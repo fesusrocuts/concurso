@@ -8,3 +8,10 @@ msgstr "Spanish"
 
 msgid "home"
 msgstr "Home"
+
+msgid "en_concursos_abiertos"
+msgstr "en/concursos/abiertos"
+
+msgid "en_concursos_cerrados"
+msgstr "en/concursos/cerrados"
+

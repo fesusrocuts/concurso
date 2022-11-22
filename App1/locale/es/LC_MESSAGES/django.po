@@ -59,3 +59,10 @@ msgstr "Validado usando"
 
 msgid "en-us"
 msgstr "es-us"
+
+msgid "en_concursos_abiertos"
+msgstr "es/concursos/abiertos"
+
+msgid "en_concursos_cerrados"
+msgstr "es/concursos/cerrados"
+

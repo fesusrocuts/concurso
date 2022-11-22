@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
-from .models import QuienEsFesus, App1Concurso, App1Empleado, App1ConcursoReglas, App1ConcursoInscritos, App1ConcursoInscritosLog, App1Categoria, App1ConcursoInscritosPuntaje
+from .models import App1QuienEsFesus, App1Concurso, App1Empleado, App1ConcursoReglas, App1ConcursoInscritos, App1ConcursoInscritosLog, App1Categoria, App1ConcursoInscritosPuntaje
 import datetime
 from django.conf import settings
 from django.http import HttpResponse
