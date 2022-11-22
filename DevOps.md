@@ -2,13 +2,13 @@
 - Aclaraciones, la idea de este contenido es reducir la critica instlación de algunas aplicaciones en Linux ubuntu 18+
 - Pasos para desplegar el aplicativo desarrollado, primero vamos a trabajar en la configuración, integración de servicios en la nube y el despliegue
 
-## Generalidades
+## _Generalidades
 Demostraciónn de uso de django 4+ MSSql 15+ Manejo Multilenguaje  Es En Técnica avanzada para Modificar el Template admiistrador Técnica Ordenamiento Datos para Consultas limitadas por ORM entre otras sorpresas
 
-## Ahora si a trabajar en Linux
+## _Ahora si a trabajar en Linux
 
 ### instalación python3.9 para usarlo con django4+
-'''
+```
 sudo apt update
 sudo apt install software-properties-common
 sudo -E add-apt-repository ppa:deadsnakes/ppa
@@ -18,10 +18,10 @@ sudo apt install python3-pip -y # si por algun motivo hay error use: python3.9 -
 pip3 install --upgrade pip 
 pip3 list
 pip3 install virtualenv
-'''
+```
 
 ### configurar mssql
-'''
+```
 sudo su
 curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 
@@ -34,10 +34,10 @@ sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18
 echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
 source ~/.bashrc
 sudo apt-get install -y unixodbc-dev
-'''
+```
 
 ### alternativas de paquetes msodbcsql17
-'''
+```
 - msodbcsql17 mssql-tools unixodbc unixodbc-dev
 
 pip install mssql-django 
@@ -52,10 +52,10 @@ echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
 sudo apt-get update -y
 sudo apt install --reinstall -y msodbcsql17 mssql-tools unixodbc unixodbc-dev
-'''
+```
 
 ### a validar nuestra instalación
-'''
+```
 - crearemos una carpeta temporal llamada tpUnitTest
 mkdir tpUnitTest
 cd tpUnitTest/
@@ -231,4 +231,4 @@ Running migrations:
   Applying auth.0011_update_proxy_permissions... OK
   Applying auth.0012_alter_user_first_name_max_length... OK
   Applying sessions.0001_initial... OK
-'''
+```
