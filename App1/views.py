@@ -32,10 +32,10 @@ def __t(request):
         "allowlangs":["es","en"],
         "branding":_("Fesus Rocuts"),
         "developedby":_("Developed by"),
-        "whoIam":QuienEsFesus.getYotas,
-        "getLinkedIn":QuienEsFesus.getLinkedIn,
-        "whoIamTech":QuienEsFesus.getYotasTech,
-        "whoIamTest":QuienEsFesus.getYotasTest,
+        "whoIam":App1QuienEsFesus.getYotas,
+        "getLinkedIn":App1QuienEsFesus.getLinkedIn,
+        "whoIamTech":App1QuienEsFesus.getYotasTech,
+        "whoIamTest":App1QuienEsFesus.getYotasTest,
         "home":_('home'),
         "admin":_('administration'),
         "talentshows":_('Talent shows'),
@@ -174,44 +174,47 @@ def registroConcursos (request, ref1, ref2, ref3, ref4):
             print("Consulte con su empleador, no tenemos acceso a su registro.")
             respuesta = "Consulte con su empleador, no tenemos acceso a su registro."
             bloquearformulario2=1
+            bloquearformulario=0
     else:
         print("Disculpa, no alcanzaste a registrarte, sigue pendiente de las próximas convocatorias, gracias!")
         respuesta = "Disculpa, no alcanzaste a registrarte, sigue pendiente de las próximas convocatorias, gracias!"
         bloquearformulario=1
 
-    # agregar log si bloquearformulario==1, este es un log de fallas o respuestas negadas al registro de concursos
-    if bloquearformulario==1 or bloquearformulario2==1:
-        App1ConcursoInscritosLogExiste = App1ConcursoInscritosLog.objects.filter(idconcurso=ref1, cedula=ref3, codigoempleado=ref4)
-        
-        if len(App1ConcursoInscritosLogExiste) > 0:
-            bloquearformulario=1
-            App1ConcursoInscritosLogTemp = App1ConcursoInscritosLog(
-                id=App1ConcursoInscritosLogExiste[0].id,
-                idconcurso=ref1,
-                idempleado=_idempleado,
-                idcategoria=ref2,
-                cedula=ref3,
-                codigoempleado=ref4,
-                registro=App1ConcursoInscritosLogExiste[0].registro,
-                estado=1,
-                intentos=App1ConcursoInscritosLogExiste[0].intentos + 1,
-                actualizado=datetime.datetime.now(),
-                descripcion=App1ConcursoInscritosLogExiste[0].descripcion + "; " + respuesta
-            )
-        else:
-            App1ConcursoInscritosLogTemp = App1ConcursoInscritosLog(
-                idconcurso=ref1,
-                idempleado=_idempleado,
-                idcategoria=ref2,
-                cedula=ref3,
-                codigoempleado=ref4,
-                registro=datetime.datetime.now(),
-                estado=1,
-                intentos=1,
-                descripcion=respuesta
-            )
-        App1ConcursoInscritosLogTemp.save()
-        
+    try:
+        # agregar log si bloquearformulario==1, este es un log de fallas o respuestas negadas al registro de concursos
+        if bloquearformulario==1 or bloquearformulario2==1:
+            App1ConcursoInscritosLogExiste = App1ConcursoInscritosLog.objects.filter(idconcurso=ref1, cedula=ref3, codigoempleado=ref4)
+            
+            if len(App1ConcursoInscritosLogExiste) > 0:
+                bloquearformulario=1
+                App1ConcursoInscritosLogTemp = App1ConcursoInscritosLog(
+                    id=App1ConcursoInscritosLogExiste[0].id,
+                    idconcurso=ref1,
+                    idempleado=_idempleado,
+                    idcategoria=ref2,
+                    cedula=ref3,
+                    codigoempleado=ref4,
+                    registro=App1ConcursoInscritosLogExiste[0].registro,
+                    estado=1,
+                    intentos=App1ConcursoInscritosLogExiste[0].intentos + 1,
+                    actualizado=datetime.datetime.now(),
+                    descripcion=App1ConcursoInscritosLogExiste[0].descripcion + "; " + respuesta
+                )
+            else:
+                App1ConcursoInscritosLogTemp = App1ConcursoInscritosLog(
+                    idconcurso=ref1,
+                    idempleado=_idempleado,
+                    idcategoria=ref2,
+                    cedula=ref3,
+                    codigoempleado=ref4,
+                    registro=datetime.datetime.now(),
+                    estado=1,
+                    intentos=1,
+                    descripcion=respuesta
+                )
+            App1ConcursoInscritosLogTemp.save()
+    except:
+        pass
     #print(empleado)
     #return redirect('/')
     #return render(request, "respuesta.html", {"respuesta": respuesta})
