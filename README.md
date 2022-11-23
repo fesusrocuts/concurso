@@ -25,3 +25,23 @@ Demostraciónn de uso de django 4+ MSSql 15+ Manejo Multilenguaje  Es En Técnic
 - el sistema va forzar siempre a restaurar la clave siempre que suba la aplicación
 - el sistema no forza al uso de usarios para crear empleados, ya que se pide registro de codigo de empleado y cedula para validar la peticion de registro a los concursos
 ```
+
+# Decidiste usar Sql Server?, aclaremos...
+```
+- los autoincrementables como identity no funcionan correctamente en la versión actual de django 4+ usando el administraddor suministrado por el framework
+- para la aplicación de vista al usuario final esto no ocurre porque el algoritmo suple esta deficiencia
+- para la administración se debe asignar el id correspondiente manualmente mientras se sube el ajuste correspondiente para que no sea visible el id al registrar y lo asigne correctamente
+- si lo desea usar en mysql debe hacer deshabilitar de su distribución de django el registro de historial para que funcione correctamente, en una versión futura se espera dar soporte a esto, para eso lea donde dice "DESHABILITAR REGISTRO HISTORICO DE DJANGO"
+```
+
+# patch1 - django 4+ con python3.9
+## DESHABILITAR REGISTRO HISTORICO DE DJANGO, 
+- antes de iniciar haga una copia de seguridad del proyecto, ya que el repositorio solo le va guardar la estructura principal de la aplicación, no django
+- cuando uso el entorno virtual e instalo lo django, este creo una carpte llamada "env", vaya a la ruta en otra terminal
+- ejemplo /home/miusuario/misproyectos/Concurso/ (aqui descargue con git el proyecto e inicie el entorno virtual)
+- accede al archivo options.py de /home/miusuario/misproyectos/Concurso/env/lib/python3.9/site-packages/django/contrib/admin/options.py
+- cambios hacer: en las siguienes funciones log_addition, log_change y log_deletion cambie el returno a None
+ejemplo:
+def log_deletion(self, request, obj, object_repr):
+        return None
+- guarde e inicie el servicio en el entorno virtual
