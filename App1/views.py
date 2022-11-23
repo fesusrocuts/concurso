@@ -13,6 +13,17 @@ import locale
 
 
 # Create your views here.
+def getNewId(currentModel):
+    try:
+        print("getNewId")
+        print(getNewId)
+        currentModel = currentModel.objects.order_by('-id')[:1]
+        currentModelId = currentModel[0].id + 1 if len(currentModel)>0 else 1 
+        print(currentModelId)
+        return currentModelId
+    except:
+        return 0;
+
 def __t(request):
     print("********************************")
     print(request)
@@ -153,7 +164,7 @@ def registroConcursos (request, ref1, ref2, ref3, ref4):
                     if len(App1ConcursoInscritosCuenta) < concurso[0].maxpersonas:
                         App1ConcursoInscritosTemp = App1ConcursoInscritos(
                             idconcurso=App1Concurso(id=ref1),
-                            idempleado=App1Empleado(id=_idempleadoid),
+                            idempleado=App1Empleado(id=_idempleado),
                             idcategoria=App1Categoria(id=ref2),
                             registro=datetime.datetime.now(),
                             estado=1,
@@ -183,6 +194,7 @@ def registroConcursos (request, ref1, ref2, ref3, ref4):
     try:
         # agregar log si bloquearformulario==1, este es un log de fallas o respuestas negadas al registro de concursos
         if bloquearformulario==1 or bloquearformulario2==1:
+            print("registrar en App1ConcursoInscritosLogExiste")
             App1ConcursoInscritosLogExiste = App1ConcursoInscritosLog.objects.filter(idconcurso=ref1, cedula=ref3, codigoempleado=ref4)
             
             if len(App1ConcursoInscritosLogExiste) > 0:
@@ -201,7 +213,16 @@ def registroConcursos (request, ref1, ref2, ref3, ref4):
                     descripcion=App1ConcursoInscritosLogExiste[0].descripcion + "; " + respuesta
                 )
             else:
+                '''
+select * from app1_concurso_inscritos_log
+CREATE SEQUENCE ConcursoInscritosLogCountBy1  
+    START WITH 1  
+    INCREMENT BY 1 ;  
+GRANT ALTER ON OBJECT::ConcursoInscritosLogCountBy1 TO app1_concurso_inscritos_log #bloqueado por acceso al servidor, no tengo los suficientes permioss, por eso no registra 
+id=getNewId(App1ConcursoInscritosLog), #se crea una funcion que suple las restriciones del ORM y de los permisos en la db para hacer grant
+                '''
                 App1ConcursoInscritosLogTemp = App1ConcursoInscritosLog(
+                    id=getNewId(App1ConcursoInscritosLog), #se crea una funcion que suple las restriciones del ORM y de los permisos en la db para hacer grant
                     idconcurso=ref1,
                     idempleado=_idempleado,
                     idcategoria=ref2,
