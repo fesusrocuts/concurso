@@ -7,29 +7,6 @@ from django.db.models.query_utils import DeferredAttribute
 import datetime
 
 
-class App1QuienEsFesus(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-
-    class Meta:
-        managed = False
-        db_table = 'App1_quienesfesus'
-    
-    def __str__(self) -> str:
-        return ""
-
-    def getYotas():
-        #return "Creado por <a href=\"https://www.linkedin.com/in/fesus/\" title=\"Quien soy?\" alt=\"Quien soy?\">Fesus Rocuts</a>"
-        return "Fesus Rocuts"
-    
-    def getLinkedIn():
-        return "https://www.linkedin.com/in/fesus"
-    
-    def getYotasTech():
-        return "{} django 4+ y SqlServer 15+".format(_("Technology used"))
-    
-    def getYotasTest():
-        return "{} MySql 5+ y MSSQL 15+".format(_("Validated using"))
-
 class App1Cargo(models.Model):
     id = models.IntegerField(primary_key=True)
     cargo = models.CharField(unique=True, max_length=255)
@@ -220,42 +197,4 @@ class App1Sexo(models.Model):
     
     def __str__(self) -> str:
         return "{0}".format(self.sexo.capitalize())
-    
 
-'''
-class App1ConcursoPuntaje(models.Model):
-    User = get_user_model()
-    id = models.IntegerField(primary_key=True)
-    idconcurso = models.ForeignKey(App1Concurso, models.DO_NOTHING, db_column='idconcurso')
-    idempleado = models.ForeignKey(App1Empleado, models.DO_NOTHING, db_column='idempleado')
-    print("idempleado")
-    #print(idempleado)
-    #print(App1Empleado.objects.all()[0])
-    
-    all_entries = App1Cargo.objects.all()
-    print("all_entries")
-    print(all_entries)
-    
-    print(App1Empleado.objects.all()[0].__dict__["idcargo_id"])
-    Copy1 =  App1Empleado.objects.all()
-    filtered_object = filter(lambda x:  x != 2, Copy1)
-    print(filtered_object)
-    print(list(filtered_object))
-    
-    idcategoria = models.ForeignKey(App1Categoria, models.DO_NOTHING, db_column='idcategoria', blank=True, null=True)
-    puntaje = models.IntegerField()
-    #print(User.objects.all().values("id"))
-    idusuario = models.ForeignKey(User, models.DO_NOTHING, db_column='idusuario')
-    #idusuario = models.IntegerField(default=User.objects.all().values("id")[0]["id"])
-    registro = models.DateTimeField()
-    estado = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'app1_concurso_puntaje'
-    
-
-    def __str__(self) -> str:
-        estado = "activo" if self.estado == 1 else "inactivo";
-        return "{0} ({1}) | Empleado: {2}(puntos {3} - cat {4})".format(self.idconcurso,estado, self.idempleado, self.puntaje, self.idcategoria)
-'''

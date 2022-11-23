@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
-from .models import App1QuienEsFesus, App1Concurso, App1Empleado, App1ConcursoReglas, App1ConcursoInscritos, App1ConcursoInscritosLog, App1Categoria, App1ConcursoInscritosPuntaje
+from .models import App1Concurso, App1Empleado, App1ConcursoReglas, App1ConcursoInscritos, App1ConcursoInscritosLog, App1Categoria, App1ConcursoInscritosPuntaje
 import datetime
 from django.conf import settings
 from django.http import HttpResponse
@@ -16,7 +16,7 @@ import locale
 def getNewId(currentModel):
     try:
         print("getNewId")
-        print(getNewId)
+        print(currentModel)
         currentModel = currentModel.objects.order_by('-id')[:1]
         currentModelId = currentModel[0].id + 1 if len(currentModel)>0 else 1 
         print(currentModelId)
@@ -43,10 +43,10 @@ def __t(request):
         "allowlangs":["es","en"],
         "branding":_("Fesus Rocuts"),
         "developedby":_("Developed by"),
-        "whoIam":App1QuienEsFesus.getYotas,
-        "getLinkedIn":App1QuienEsFesus.getLinkedIn,
-        "whoIamTech":App1QuienEsFesus.getYotasTech,
-        "whoIamTest":App1QuienEsFesus.getYotasTest,
+        "whoIam":"Fesus Rocuts",
+        "getLinkedIn":"https://www.linkedin.com/in/fesus",
+        "whoIamTech":"django 4+ y SqlServer 15+".format(_("Technology used")),
+        "whoIamTest":"MySql 5+ y MSSQL 15+".format(_("Validated using")),
         "home":_('home'),
         "admin":_('administration'),
         "talentshows":_('Talent shows'),
