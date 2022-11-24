@@ -163,6 +163,7 @@ def registroConcursos (request, ref1, ref2, ref3, ref4):
                     App1ConcursoInscritosCuenta = App1ConcursoInscritos.objects.filter(idconcurso=ref1, estado=1)
                     if len(App1ConcursoInscritosCuenta) < concurso[0].maxpersonas:
                         App1ConcursoInscritosTemp = App1ConcursoInscritos(
+                            id=getNewId(App1ConcursoInscritos),
                             idconcurso=App1Concurso(id=ref1),
                             idempleado=App1Empleado(id=_idempleado),
                             idcategoria=App1Categoria(id=ref2),
