@@ -2,7 +2,7 @@
 Demostraciónn de uso de django 4+ MSSql 15+ Manejo Multilenguaje  Es En Técnica avanzada para Modificar el Template admiistrador Técnica Ordenamiento Datos para Consultas limitadas por ORM entre otras sorpresas
 
 ## video explicativo 
-[video explicativo 1+ hora]([https://www.genome.gov/](https://youtu.be/qU1Fe42PPVo))
+[video explicativo 1+ hora](https://youtu.be/qU1Fe42PPVo)
 
 ## ERM - Diagrama entidad-relación
 ![Imagen excepción restricción autores y libros en Travel](https://raw.githubusercontent.com/fesusrocuts/concurso/main/db/ERM.png)
